@@ -13,8 +13,13 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    # PUT YOUR CODE HERE
-    pass
+    if n == 1:
+        return False
+    for number in range(2, n):
+        if n % number == 0:
+            return False
+    else:
+        return True
 
 
 def gcd(a: int, b: int) -> int:
@@ -26,8 +31,12 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
-    pass
+    while a != 0 and b != 0:
+        if a > b:
+            a %= b
+        else:
+            b %= a
+    return a + b
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -38,8 +47,24 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
-    pass
+
+    a = e
+    b = phi
+    if a < b:
+        a, b = b, a
+    list1 = [a]
+    list2 = [b]
+    n = 0
+    while a % b:
+        a, b = b, a % b
+        list1.append(a)
+        list2.append(b)
+        n += 1
+    x, y = 0, 1
+    while n > 0:
+        n -= 1
+        x, y = y, x - y * (list1[n] // list2[n])
+    return y % phi
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
@@ -48,11 +73,9 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
     elif p == q:
         raise ValueError("p and q cannot be equal")
 
-    # n = pq
-    # PUT YOUR CODE HERE
+    n = p * q
 
-    # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
+    phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
@@ -72,12 +95,11 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
 
 def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:
-    # Unpack the key into it's components
+
     key, n = pk
-    # Convert each letter in the plaintext to numbers based on
-    # the character using a^b mod m
+
     cipher = [(ord(char) ** key) % n for char in plaintext]
-    # Return the array of bytes
+
     return cipher
 
 
@@ -91,6 +113,7 @@ def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
 
 
 if __name__ == "__main__":
+
     print("RSA Encrypter/ Decrypter")
     p = int(input("Enter a prime number (17, 19, 23, etc): "))
     q = int(input("Enter another prime number (Not one you entered above): "))
