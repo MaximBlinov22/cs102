@@ -1,10 +1,12 @@
-from typing import Tuple, List, Set, Optional
 import random
+from typing import Any, List, Optional, Set, Tuple
 
 
 def read_sudoku(filename: str) -> List[List[str]]:
     """ Прочитать Судоку из указанного файла """
-    digits = [c for c in open('/home/maxim/cs102/homework02/' + filename).read() if c in '123456789.']
+    digits = [
+        c for c in open("/home/maxim/cs102/homework02/" + filename).read() if c in "123456789."
+    ]
     grid = group(digits, 9)
     return grid
 
@@ -12,10 +14,14 @@ def read_sudoku(filename: str) -> List[List[str]]:
 def display(grid: List[List[str]]) -> None:
     """Вывод Судоку """
     width = 2
-    line = '+'.join(['-' * (width * 3)] * 3)
+    line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
-        print(''.join(grid[row][col].center(width) + ('|' if str(col) in '25' else '') for col in range(9)))
-        if str(row) in '25':
+        print(
+            "".join(
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
+            )
+        )
+        if str(row) in "25":
             print(line)
     print()
 
@@ -29,7 +35,7 @@ def group(values: List[str], n: int) -> List[List[str]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    result = [values[x: x + n] for x in range(0, len(values), n)]
+    result = [values[x : x + n] for x in range(0, len(values), n)]
     return result
 
 
@@ -73,9 +79,9 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     row, col = pos
     row = row // 3
     col = col // 3
-    total = []
-    for num in grid[row * 3: row * 3 + 3]:
-        total += num[col * 3: col * 3 + 3]
+    total: List[str] = []
+    for num in grid[row * 3 : row * 3 + 3]:
+        total += num[col * 3 : col * 3 + 3]
     return total
 
 
@@ -91,7 +97,7 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     """
     for n_row, row in enumerate(grid):
         for n_col, col in enumerate(row):
-            if col == '.':
+            if col == ".":
                 return n_row, n_col
     return None
 
@@ -107,7 +113,7 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
-    possible = set('123456789')
+    possible = set("123456789")
     all_row = set(get_row(grid, pos))
     all_col = set(get_col(grid, pos))
     all_block = set(get_block(grid, pos))
@@ -137,14 +143,14 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
         if solution:
             return solution
 
-    grid[row][col] = '.'
+    grid[row][col] = "."
     return None
 
 
-def check_solution(solution: List[List[str]]) -> bool:
+def check_solution(solution: List[List[Any]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
-    values = set('123456789')
+    values = set("123456789")
     for row in solution:
         if set(row) != values:
             return False
@@ -182,18 +188,21 @@ def generate_sudoku(N: int) -> List[List[str]]:
     True
     """
     N = 81 - N
-    grid = [['.'] * 9 for i in range(9)]
-    grid = solve(grid)
+    grid = [["."] * 9 for i in range(9)]
+    aux = solve(grid)
+    while aux is None:
+        aux = solve(grid)
+    grid = aux
     while N > 0:
         row, col = random.randint(0, 8), random.randint(0, 8)
-        if grid[row][col] != '.':
-            grid[row][col] = '.'
+        if grid[row][col] != ".":
+            grid[row][col] = "."
             N -= 1
     return grid
 
 
-if __name__ == '__main__':
-    for fname in ['puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt']:
+if __name__ == "__main__":
+    for fname in ["puzzle1.txt", "puzzle2.txt", "puzzle3.txt"]:
         grid = read_sudoku(fname)
         display(grid)
         solution = solve(grid)
