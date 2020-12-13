@@ -41,7 +41,9 @@ class GitIndexEntry(tp.NamedTuple):
             self.flags,
             self.name.encode(),
         )
-        packed = struct.pack("!LLLLLLLLLL20sH%ds%dx" % (name_length, 8 - ((62 + name_length) % 8)), *values)
+        packed = struct.pack(
+            "!LLLLLLLLLL20sH%ds%dx" % (name_length, 8 - ((62 + name_length) % 8)), *values
+        )
         return packed
 
     @staticmethod
@@ -49,8 +51,8 @@ class GitIndexEntry(tp.NamedTuple):
         name_length = len(data[62:])
         head = struct.unpack("!LLLLLLLLLL20sH", data[:62])
         name = struct.unpack("!%ss" % name_length, data[62:])[0]
-        name = name.strip(b'\x00').decode()
-        return GitIndexEntry(*(head +(name, )))
+        name = name.strip(b"\x00").decode()
+        return GitIndexEntry(*(head + (name,)))
 
 
 def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
@@ -58,11 +60,11 @@ def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
     if os.path.exists(gitdir / "index"):
         with open(gitdir / "index", "rb") as f:
             data = f.read()
-        entry_count = struct.unpack("!L", data[8: 12])[0]
+        entry_count = struct.unpack("!L", data[8:12])[0]
         start_pos = 12
         for i in range(entry_count):
-            end_pos = start_pos + 62 + data[start_pos + 62 : ].find(b'\x00')
-            entry = data[start_pos : end_pos]
+            end_pos = start_pos + 62 + data[start_pos + 62 :].find(b"\x00")
+            entry = data[start_pos:end_pos]
             result.append(GitIndexEntry.unpack(entry))
             start_pos = end_pos + (8 - ((62 + len(result[i].name)) % 8))
     return result
