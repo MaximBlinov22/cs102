@@ -52,7 +52,7 @@ class GitIndexEntry(tp.NamedTuple):
         head = struct.unpack("!LLLLLLLLLL20sH", data[:62])
         name = struct.unpack("!%ss" % name_length, data[62:])[0]
         name = name.strip(b'\x00').decode()
-        return GitIndexEntry(*(head + (name, )))
+        return GitIndexEntry(*(head + (name,)))
 
 
 def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
@@ -63,7 +63,7 @@ def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
         entry_count = struct.unpack("!L", data[8:12])[0]
         start_pos = 12
         for i in range(entry_count):
-            end_pos = start_pos + 62 + data[start_pos + 62 :].find(b'\x00')
+            end_pos = start_pos + 62 + data[start_pos + 62 :].find(b"\x00")
             entry = data[start_pos:end_pos]
             result.append(GitIndexEntry.unpack(entry))
             start_pos = end_pos + (8 - ((62 + len(result[i].name)) % 8))
