@@ -51,7 +51,7 @@ class GitIndexEntry(tp.NamedTuple):
         name_length = len(data[62:])
         head = struct.unpack("!LLLLLLLLLL20sH", data[:62])
         name = struct.unpack("!%ss" % name_length, data[62:])[0]
-        name = name.strip(b'\x00').decode()
+        name = name.strip(b"\x00").decode()
         return GitIndexEntry(*(head + (name,)))
 
 
