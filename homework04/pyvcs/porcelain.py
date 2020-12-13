@@ -10,19 +10,16 @@ from pyvcs.tree import commit_tree, write_tree
 
 
 def add(gitdir: pathlib.Path, paths: tp.List[pathlib.Path]) -> None:
-    # PUT YOUR CODE HERE
     update_index(gitdir, paths, True)
 
 
 def commit(gitdir: pathlib.Path, message: str, author: tp.Optional[str] = None) -> str:
-    # PUT YOUR CODE HERE
     index = read_index(gitdir)
     tree_sha = write_tree(gitdir, index)
     return commit_tree(gitdir, tree=tree_sha, message=message, author=author)
 
 
 def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
-    # PUT YOUR CODE HERE
     if is_detached(gitdir) and get_ref(gitdir) == obj_name:
         return
     elif get_ref(gitdir).split("/")[2] == obj_name:

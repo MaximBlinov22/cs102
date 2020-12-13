@@ -3,7 +3,6 @@ import typing as tp
 
 
 def update_ref(gitdir: pathlib.Path, ref: tp.Union[str, pathlib.Path], new_value: str) -> None:
-    # PUT YOUR CODE HERE
     if isinstance(ref, str):
         ref = pathlib.Path(ref)
 
@@ -13,12 +12,10 @@ def update_ref(gitdir: pathlib.Path, ref: tp.Union[str, pathlib.Path], new_value
 
 
 def symbolic_ref(gitdir: pathlib.Path, name: str, ref: str) -> None:
-    # PUT YOUR CODE HERE
     ...
 
 
 def ref_resolve(gitdir: pathlib.Path, refname: str) -> tp.Union[str, None]:
-    # PUT YOUR CODE HERE
     if refname == "HEAD":
         with open(gitdir / refname, "r") as f:
             content = f.read()
@@ -34,7 +31,6 @@ def ref_resolve(gitdir: pathlib.Path, refname: str) -> tp.Union[str, None]:
 
 
 def resolve_head(gitdir: pathlib.Path) -> tp.Optional[str]:
-    # PUT YOUR CODE HERE
     if ref_resolve(gitdir, "HEAD") is None:
         return None
     else:
@@ -42,7 +38,6 @@ def resolve_head(gitdir: pathlib.Path) -> tp.Optional[str]:
 
 
 def is_detached(gitdir: pathlib.Path) -> bool:
-    # PUT YOUR CODE HERE
     path = gitdir / "HEAD"
 
     with open(path, "r") as f:
@@ -55,7 +50,6 @@ def is_detached(gitdir: pathlib.Path) -> bool:
 
 
 def get_ref(gitdir: pathlib.Path) -> str:
-    # PUT YOUR CODE HERE
     with open(gitdir / "HEAD", "r") as f:
         content = f.read()
     if is_detached(gitdir):

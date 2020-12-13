@@ -4,7 +4,6 @@ import typing as tp
 
 
 def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
-    # PUT YOUR CODE HERE
     if workdir == ".":
         workdir = pathlib.Path(".")
     if isinstance(workdir, str):
@@ -21,7 +20,6 @@ def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
 
 
 def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
-    # PUT YOUR CODE HERE
     if not os.getenv("GIT_DIR"):
         os.environ["GIT_DIR"] = ".git"
     dir_name = os.environ["GIT_DIR"]
