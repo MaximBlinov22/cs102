@@ -2,7 +2,7 @@ import argparse
 import pathlib
 
 from pyvcs.cli import (
-    cmd_cat_file, 
+    cmd_cat_file,
     cmd_checkout,
     cmd_commit_tree,
     cmd_hash_object,
@@ -12,7 +12,7 @@ from pyvcs.cli import (
     cmd_symbolic_ref,
     cmd_update_index,
     cmd_update_ref,
-    cmd_write_tree
+    cmd_write_tree,
 )
 
 
