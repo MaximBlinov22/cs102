@@ -11,7 +11,6 @@ from pyvcs.repo import repo_find
 
 
 def hash_object(data: bytes, fmt: str, write: bool = False) -> str:
-    # PUT YOUR CODE HERE
     header = f"{fmt} {len(data)}\0"
     store = header.encode() + data
     hash_name = hashlib.sha1(store).hexdigest()
@@ -30,7 +29,6 @@ def hash_object(data: bytes, fmt: str, write: bool = False) -> str:
 
 
 def resolve_object(obj_name: str, gitdir: pathlib.Path) -> tp.List[str]:
-    # PUT YOUR CODE HERE
     if len(obj_name) < 4 or len(obj_name) > 40:
         raise Exception(f"Not a valid object name {obj_name}")
 
@@ -46,12 +44,10 @@ def resolve_object(obj_name: str, gitdir: pathlib.Path) -> tp.List[str]:
 
 
 def find_object(obj_name: str, gitdir: pathlib.Path) -> str:
-    # PUT YOUR CODE HERE
     ...
 
 
 def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
-    # PUT YOUR CODE HERE
     path = repo_find(gitdir) / "objects" / sha[:2]
     with open(path / sha[2:], mode="rb") as f:
         obj_data = zlib.decompress(f.read())
@@ -64,7 +60,6 @@ def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
 
 
 def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
-    # PUT YOUR CODE HERE
     result = []
     while len(data) != 0:
         mode = int(data[: data.find(b" ")].decode())
@@ -78,7 +73,6 @@ def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
 
 
 def cat_file(obj_name: str, pretty: bool = True) -> None:
-    # PUT YOUR CODE HERE
     gitdir = repo_find(".")
     if len(resolve_object(obj_name, gitdir)) != 0:
         header, content = read_object(obj_name, gitdir)
@@ -96,7 +90,6 @@ def cat_file(obj_name: str, pretty: bool = True) -> None:
 #test
 
 def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str, str]]:
-    # PUT YOUR CODE HERE
     result = []
     header, data = read_object(tree_sha, gitdir)
     for file in read_tree(data):
@@ -111,6 +104,5 @@ def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str
 
 
 def commit_parse(raw: bytes, start: int = 0, dct=None):
-    # PUT YOUR CODE HERE
     data = zlib.decompress(raw)
     return data[data.find(b"tree") + 5 : data.find(b"tree") + 45]
