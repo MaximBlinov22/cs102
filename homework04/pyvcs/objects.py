@@ -87,10 +87,7 @@ def cat_file(obj_name: str, pretty: bool = True) -> None:
             print(result)
         else:
             print(content.decode())
-
-
-# test
-
+#test
 
 def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str, str]]:
     result = []

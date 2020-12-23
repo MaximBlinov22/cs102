@@ -42,8 +42,7 @@ class GitIndexEntry(tp.NamedTuple):
             self.name.encode(),
         )
         packed = struct.pack(
-            "!LLLLLLLLLL20sH%ds%dx" % (name_length, 8 - ((62 + name_length) % 8)),
-            *values
+            "!LLLLLLLLLL20sH%ds%dx" % (name_length, 8 - ((62 + name_length) % 8)), *values
         )
         return packed
 
@@ -98,9 +97,7 @@ def ls_files(gitdir: pathlib.Path, details: bool = False) -> None:
         print("\n".join(file_names))
 
 
-def update_index(
-    gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True
-) -> None:
+def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True) -> None:
     entries = []
     for path in paths:
         with open(path, "r") as f:

@@ -9,9 +9,7 @@ from pyvcs.objects import hash_object
 from pyvcs.refs import get_ref, is_detached, resolve_head, update_ref
 
 
-def write_tree(
-    gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str = ""
-) -> str:
+def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str = "") -> str:
     records = b""
     for entry in index:
         if "/" in entry.name:
@@ -31,8 +29,7 @@ def write_tree(
     tree_name = hash_object(records, fmt="tree", write=True)
     return tree_name
 
-
-# test
+#test
 def commit_tree(
     gitdir: pathlib.Path,
     tree: str,
@@ -44,9 +41,7 @@ def commit_tree(
     seconds_time = str(int(time.mktime(time.localtime()))).encode()
     timezone = "{:+}00".format(int(time.timezone / -3600)).zfill(5).encode()
     if author is None:
-        author = "{} <{}>".format(
-            os.getenv("GIT_AUTHOR_NAME"), os.getenv("GIT_AUTHOR_EMAIL")
-        )
+        author = "{} <{}>".format(os.getenv("GIT_AUTHOR_NAME"), os.getenv("GIT_AUTHOR_EMAIL"))
     assert isinstance(author, str)
     if parent:
         assert isinstance(parent, str)
